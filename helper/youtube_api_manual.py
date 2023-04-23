@@ -62,7 +62,7 @@ playlist_videos = youtube.playlistItems().list(playlistId=playlist_id,
 # printj(playlist_videos)
 
 # получить все id видеороликов из плейлиста
-video_ids: list[str] = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
+#  video_ids: list[str] = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
 # print(video_ids)
 
 
@@ -70,16 +70,16 @@ video_ids: list[str] = [video['contentDetails']['videoId'] for video in playlist
 вывести длительности видеороликов из плейлиста
 docs: https://developers.google.com/youtube/v3/docs/videos/list
 '''
-video_response = youtube.videos().list(part='contentDetails,statistics',
-                                       id=','.join(video_ids)
-                                       ).execute()
+#   video_response = youtube.videos().list(part='contentDetails,statistics',
+ #                                        id=','.join(video_ids)
+  #                                        ).execute()
 # printj(video_response)
 
-for video in video_response['items']:
+# for video in video_response['items']:
     # YouTube video duration is in ISO 8601 format
-    iso_8601_duration = video['contentDetails']['duration']
-    duration = isodate.parse_duration(iso_8601_duration)
-    print(duration)
+ #   iso_8601_duration = video['contentDetails']['duration']
+  #  duration = isodate.parse_duration(iso_8601_duration)
+   # print(duration)
 
 
 '''
