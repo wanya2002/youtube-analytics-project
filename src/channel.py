@@ -18,13 +18,36 @@ class Channel:
         self.view_count = self.channel['items'][0]['statistics']['viewCount']
         self.video_count = self.channel['items'][0]['statistics']['videoCount']
 
+    def __str__(self):
+        return f'{self.title} ({self.url}'
+
+    def __add__(self, other):
+        return int(self.subscriber) + int(other.subscriber)
+
+    def __sub__(self, other):
+        return int(self.subscriber) - int(other.subscriber)
+
+    def __gt__(self, other):
+        return int(self.subscriber) > int(other.subscriber)
+
+    def __ge__(self, other):
+        return int(self.subscriber) >= int(other.subscriber)
+
+    def __lt__(self, other):
+        return int(self.subscriber) < int(other.subscriber)
+
+    def __le__(self, other):
+        return int(self.subscriber) <= int(other.subscriber)
+
+    def __eq__(self, other):
+        return int(self.subscriber) == int(other.subscriber)
 
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        youtube = build('youtube', 'v3', developerKey=self.api_key)
-        channel = youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
-        print(json.dumps(channel, indent=2, ensure_ascii=False))
+        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
+        self.channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
+        print(json.dumps(self.channel, indent=2, ensure_ascii=False))
 
     @classmethod
     def get_service(cls):
@@ -39,8 +62,6 @@ class Channel:
     @property
     def channel_id(self):
         return self.__channel_id
-
-
 
 
 
