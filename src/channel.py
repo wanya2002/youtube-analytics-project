@@ -64,4 +64,5 @@ class Channel:
         return self.__channel_id
 
 
-
+video1 = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
+video1.print_info()
