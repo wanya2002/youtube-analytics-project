@@ -49,6 +49,14 @@ class Channel:
         self.channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         print(json.dumps(self.channel, indent=2, ensure_ascii=False))
 
+    def print_info_pl(self):
+        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
+        self.playlists = self.youtube.playlists().list(channelId=self.channel_id,
+                                             part='contentDetails,snippet',
+                                             maxResults=50,
+                                             ).execute()
+        print(self.playlists)
+
     @classmethod
     def get_service(cls):
         cls.youtube = build('youtube', 'v3', developerKey=cls.api_key)
@@ -65,4 +73,5 @@ class Channel:
 
 
 video1 = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
-video1.print_info()
+video1.print_info_pl()
+
