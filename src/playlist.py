@@ -10,12 +10,13 @@ class PlayList:
     """Создание нового класса PlayList"""
     def __init__(self, playlist_id):
         self.playlist_id = playlist_id
-        self.channel_id = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
         self.youtube = build('youtube', 'v3', developerKey=self.api_key)
-        self.playlists = self.youtube.playlists().list(channelId=self.channel_id,
+        self.playlists = self.youtube.playlists().list(id=self.playlist_id,
                                              part='contentDetails,snippet',
                                              maxResults=50,
                                              ).execute()
+        self.title = self.playlists['items'][0]['snippet']['title']
+        self.url = self.playlists['items'][0]['snippet']['thumbnails']['default']['url']
 
 
 
@@ -23,7 +24,7 @@ class PlayList:
 
         """Выводит в консоль информацию о канале."""
         self.youtube = build('youtube', 'v3', developerKey=self.api_key)
-        self.playlists = self.youtube.playlists().list(channelId=self.channel_id,
+        self.playlists = self.youtube.playlists().list(id=self.playlist_id,
                                                        part='contentDetails,snippet',
                                                        maxResults=50,
                                                        ).execute()
@@ -77,8 +78,6 @@ class PlayList:
         return best_video_url
 
 
-pl = PlayList('PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb')
-pl.print_info()
 
 
 

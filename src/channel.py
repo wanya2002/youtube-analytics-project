@@ -73,5 +73,6 @@ class Channel:
 
 
 video1 = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
-video1.print_info_pl()
+video1.print_info()
+print(video1.url)
 
