@@ -17,14 +17,16 @@ class PlayList:
                                              maxResults=50,
                                              ).execute()
 
+
+
     def print_info(self) -> None:
 
         """Выводит в консоль информацию о канале."""
         self.youtube = build('youtube', 'v3', developerKey=self.api_key)
         self.playlists = self.youtube.playlists().list(channelId=self.channel_id,
-                                             part='contentDetails,snippet',
-                                             maxResults=50,
-                                             ).execute()
+                                                       part='contentDetails,snippet',
+                                                       maxResults=50,
+                                                       ).execute()
         print(json.dumps(self.playlists, indent=2, ensure_ascii=False))
 
     def total_duration(self):
@@ -75,7 +77,8 @@ class PlayList:
         return best_video_url
 
 
-
+pl = PlayList('PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb')
+pl.print_info()
 
 
 
