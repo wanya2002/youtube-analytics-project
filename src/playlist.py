@@ -6,11 +6,11 @@ from googleapiclient.discovery import build
 
 class PlayList:
     api_key = os.getenv('YT_API_KEY')
+    youtube = build('youtube', 'v3', developerKey=api_key)
 
     """Создание нового класса PlayList"""
     def __init__(self, playlist_id):
         self.playlist_id = playlist_id
-        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
         self.playlists = self.youtube.playlists().list(id=self.playlist_id,
                                              part='contentDetails,snippet',
                                              maxResults=50,
@@ -23,7 +23,6 @@ class PlayList:
     def print_info(self) -> None:
 
         """Выводит в консоль информацию о канале."""
-        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
         self.playlists = self.youtube.playlists().list(id=self.playlist_id,
                                                        part='contentDetails,snippet',
                                                        maxResults=50,
@@ -31,14 +30,13 @@ class PlayList:
         print(json.dumps(self.playlists, indent=2, ensure_ascii=False))
 
     def total_duration(self):
-        api_key = os.getenv('YT_API_KEY')
-        youtube = build('youtube', 'v3', developerKey=api_key)
-        playlist_videos = youtube.playlistItems().list(playlistId=self.playlist_id,
+
+        playlist_videos = self.youtube.playlistItems().list(playlistId=self.playlist_id,
                                                                  part='contentDetails',
                                                                  maxResults=50,
                                                                  ).execute()
         video_ids = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
-        video_response = youtube.videos().list(part='contentDetails,statistics',
+        video_response = self.youtube.videos().list(part='contentDetails,statistics',
                                               id=','.join(video_ids)
                                                ).execute()
 
@@ -57,14 +55,13 @@ class PlayList:
         return total_video_duration
 
     def show_best_video(self):
-        api_key = os.getenv('YT_API_KEY')
-        youtube = build('youtube', 'v3', developerKey=api_key)
-        playlist_videos = youtube.playlistItems().list(playlistId=self.playlist_id,
+
+        playlist_videos = self.youtube.playlistItems().list(playlistId=self.playlist_id,
                                                        part='contentDetails',
                                                        maxResults=50,
                                                        ).execute()
         video_ids = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
-        video_response = youtube.videos().list(part='contentDetails,statistics',
+        video_response = self.youtube.videos().list(part='contentDetails,statistics',
                                                id=','.join(video_ids)
                                                ).execute()
         best_video_like_count = 0
@@ -76,6 +73,11 @@ class PlayList:
                 best_video_like_count = like_count
                 best_video_url = f"https://youtu.be/{video['id']}"
         return best_video_url
+
+pl = PlayList('PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb')
+duration = pl.total_duration()
+print(duration)
+print(pl.show_best_video())
 
 
 

@@ -5,11 +5,11 @@ from googleapiclient.discovery import build
 class Channel:
     """Класс для ютуб-канала"""
     api_key = os.getenv('YT_API_KEY')
+    youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
-        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
         self.channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
         self.description = self.channel['items'][0]['snippet']['description']
@@ -45,12 +45,10 @@ class Channel:
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
         self.channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         print(json.dumps(self.channel, indent=2, ensure_ascii=False))
 
     def print_info_pl(self):
-        self.youtube = build('youtube', 'v3', developerKey=self.api_key)
         self.playlists = self.youtube.playlists().list(channelId=self.channel_id,
                                              part='contentDetails,snippet',
                                              maxResults=50,
